@@ -1,4 +1,5 @@
 import { Establishment } from '../../models/Establishment';
+import { Menu } from '../../models/Menu';
 import {
 	ICreateEstablishmentDTO,
 	IEstablishmentsRepository,
@@ -34,12 +35,40 @@ class EstablishmentsRepository implements IEstablishmentsRepository {
 		this.establishments.push(establishment);
 	}
 
+	findById(id: string): Establishment | undefined {
+		const establishment = this.establishments.find(
+			(establishment) => establishment.id === id
+		);
+
+		return establishment;
+	}
+
 	findByName(name: string): Establishment | undefined {
 		const establishment = this.establishments.find(
 			(establishment) => establishment.name === name
 		);
 
 		return establishment;
+	}
+
+	findByEmail(email: string): Establishment | undefined {
+		const establishment = this.establishments.find(
+			(establishment) => establishment.email === email
+		);
+
+		return establishment;
+	}
+
+	addMenuCategory(id: string, category: string): void {
+		const establishment = this.findById(id);
+
+		if (establishment) {
+			const menu = new Menu();
+
+			Object.assign(menu, { category });
+
+			establishment.menus.push(menu);
+		}
 	}
 
 	list(): Establishment[] {

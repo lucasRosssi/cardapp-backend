@@ -8,9 +8,12 @@ interface ICreateEstablishmentDTO {
 }
 
 interface IEstablishmentsRepository {
-	findByName(name: string): Establishment | undefined;
-	list(): Establishment[];
 	create({ email, name, picture, address }: ICreateEstablishmentDTO): void;
+	findById(id: string): Establishment | undefined;
+	findByName(name: string): Establishment | undefined;
+	findByEmail(email: string): Establishment | undefined;
+	addMenuCategory(id: string, category: string): void;
+	list(): Establishment[];
 }
 
 export { ICreateEstablishmentDTO, IEstablishmentsRepository };
