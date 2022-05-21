@@ -15,11 +15,13 @@ class CreateMenuController {
 				.status(201)
 				.json({ message: 'Successfully added new menu category!' });
 		} catch (error: any) {
+			let status = 400
+
 			if (error instanceof ReferenceError) {
-				return response.status(404).json({ error: error.message });
+				status = 404;
 			}
 
-			return response.status(400).json({ error: error.message });
+			return response.status(status).json({ error: error.message });
 		}
 	}
 }
