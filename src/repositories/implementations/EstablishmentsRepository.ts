@@ -1,3 +1,4 @@
+import { Dish } from '../../models/Dish';
 import { Establishment } from '../../models/Establishment';
 import { Menu } from '../../models/Menu';
 import {
@@ -68,6 +69,27 @@ class EstablishmentsRepository implements IEstablishmentsRepository {
 			Object.assign(menu, { category });
 
 			establishment.menus.push(menu);
+		}
+	}
+
+	addDishToMenu(establishment_id: string, menu_id: string, name: string, price: number, picture: string, details: string): void {
+		const establishment = this.findById(establishment_id);
+
+		if (establishment) {
+			const menu = establishment.menus.find(menu => menu.id === menu_id);
+
+			if (menu) {
+				const dish = new Dish();
+
+				Object.assign(dish, {
+					name,
+					price,
+					picture,
+					details,
+				});
+
+				menu.dishes.push(dish);
+			}
 		}
 	}
 

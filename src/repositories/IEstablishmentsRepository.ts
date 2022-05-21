@@ -13,6 +13,7 @@ interface IEstablishmentsRepository {
 	findByName(name: string): Establishment | undefined;
 	findByEmail(email: string): Establishment | undefined;
 	addMenuCategory(id: string, category: string): void;
+	addDishToMenu(establishment_id: string, menu_id: string, name: string, price: number, picture: string, details: string): void;
 	list(): Establishment[];
 }
 
