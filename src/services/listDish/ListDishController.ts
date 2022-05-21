@@ -5,10 +5,10 @@ class ListDishController {
 	constructor(private listDishService: ListDishService) {}
 
 	handle(request: Request, response: Response) {
-		const { establishment_id, menu_id } = request.params;
+		const { establishment_id, category } = request.params;
 
 		try {
-			const list = this.listDishService.execute({ establishment_id, menu_id });
+			const list = this.listDishService.execute({ establishment_id, category });
 
 			return response.status(200).json(list);
 		} catch (error: any) {

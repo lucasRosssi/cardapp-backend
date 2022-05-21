@@ -2,7 +2,7 @@ import { EstablishmentsRepository } from '../../repositories/implementations/Est
 
 interface IRequest {
 	establishment_id: string;
-	menu_id: string;
+	category: string;
 	name: string;
 	price: number;
 	picture: string;
@@ -12,17 +12,11 @@ interface IRequest {
 class CreateDishService {
 	constructor(private establishmentsRepository: EstablishmentsRepository) {}
 
-	execute({ establishment_id, menu_id, name, price, picture, details }: IRequest): void {
-		const establishment = this.establishmentsRepository.findById(establishment_id);
-
-		if (!establishment) {
-			throw new ReferenceError('Establishment not found');
-		}
-
-		const menu = establishment.menus.find(menu => menu.id === menu_id);
+	execute({ establishment_id, category, name, price, picture, details }: IRequest): void {
+		const menu = this.establishmentsRepository.findMenuByCategory({ establishment_id, category })
 
 		if (!menu) {
-			throw new ReferenceError('Menu not found');
+			throw new ReferenceError('Menu not found')
 		}
 
 		const dishAlreadyExists = menu.dishes.find(dish => dish.name === name)
@@ -31,7 +25,7 @@ class CreateDishService {
 			throw new Error('Dish already exists!');
 		}
 
-		this.establishmentsRepository.addDishToMenu(establishment_id, menu_id, name, price, picture, details)
+		this.establishmentsRepository.addDishToMenu({ establishment_id, category, name, price, picture, details })
 	}
 }
 

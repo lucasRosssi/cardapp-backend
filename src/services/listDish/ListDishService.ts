@@ -2,20 +2,14 @@ import { EstablishmentsRepository } from '../../repositories/implementations/Est
 
 interface IRequest {
 	establishment_id: string;
-	menu_id: string;
+	category: string;
 }
 
 class ListDishService {
 	constructor(private establishmentsRepository: EstablishmentsRepository) {}
 
-	execute({ establishment_id, menu_id }: IRequest) {
-		const establishment = this.establishmentsRepository.findById(establishment_id);
-
-		if (!establishment) {
-			throw new Error('Establishment not found');
-		}
-
-		const menu = establishment.menus.find(menu => menu.id === menu_id);
+	execute({ establishment_id, category }: IRequest) {
+		const menu = this.establishmentsRepository.findMenuByCategory({ establishment_id, category })
 
 		if (!menu) {
 			throw new Error('Menu not found');

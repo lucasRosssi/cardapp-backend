@@ -22,7 +22,7 @@ class CreateMenuService {
 			throw new Error('Category already exists!');
 		}
 
-		this.establishmentsRespository.addMenuCategory(establishment_id, category);
+		this.establishmentsRespository.addMenuCategory({establishment_id, category});
 	}
 }
 
