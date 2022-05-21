@@ -2,8 +2,12 @@ import { Dish } from '../../models/Dish';
 import { Establishment } from '../../models/Establishment';
 import { Menu } from '../../models/Menu';
 import {
+	IAddDishToMenuDTO,
+	IAddMenuCategoryDTO,
 	ICreateEstablishmentDTO,
+	IDeleteMenuCategoryDTO,
 	IEstablishmentsRepository,
+	IFindMenuByCategory,
 } from '../IEstablishmentsRepository';
 
 class EstablishmentsRepository implements IEstablishmentsRepository {
@@ -14,6 +18,7 @@ class EstablishmentsRepository implements IEstablishmentsRepository {
 	constructor() {
 		this.establishments = [];
 	}
+	
 
 	public static getInstance(): EstablishmentsRepository {
 		if (!EstablishmentsRepository.INSTANCE) {
@@ -60,8 +65,18 @@ class EstablishmentsRepository implements IEstablishmentsRepository {
 		return establishment;
 	}
 
-	addMenuCategory(id: string, category: string): void {
-		const establishment = this.findById(id);
+	findMenuByCategory({ establishment_id, category }: IFindMenuByCategory): Menu | undefined {
+		const establishment = this.findById(establishment_id);
+
+		if (establishment) {
+			const menu = establishment.menus.find(menu => menu.category === category);
+
+			return menu
+		}
+	}
+
+	addMenuCategory({establishment_id, category}: IAddMenuCategoryDTO): void {
+		const establishment = this.findById(establishment_id);
 
 		if (establishment) {
 			const menu = new Menu();
@@ -72,23 +87,32 @@ class EstablishmentsRepository implements IEstablishmentsRepository {
 		}
 	}
 
-	addDishToMenu(establishment_id: string, menu_id: string, name: string, price: number, picture: string, details: string): void {
+	addDishToMenu({establishment_id, category, name, price, picture, details}: IAddDishToMenuDTO): void {
+		const menu = this.findMenuByCategory({ establishment_id, category })
+
+		if (menu) {
+			const dish = new Dish();
+
+			Object.assign(dish, {
+				name,
+				price,
+				picture,
+				details,
+			});
+
+			menu.dishes.push(dish);
+		}
+		
+	}
+
+	deleteMenuCategory({ establishment_id, category }: IDeleteMenuCategoryDTO): void {
 		const establishment = this.findById(establishment_id);
 
 		if (establishment) {
-			const menu = establishment.menus.find(menu => menu.id === menu_id);
+			const menuIndex = establishment.menus.findIndex(menu => menu.category === category);
 
-			if (menu) {
-				const dish = new Dish();
-
-				Object.assign(dish, {
-					name,
-					price,
-					picture,
-					details,
-				});
-
-				menu.dishes.push(dish);
+			if (menuIndex !== -1) {
+				establishment.menus.splice(menuIndex, 1);
 			}
 		}
 	}
