@@ -5,7 +5,7 @@ class CreateEstablishmentController {
 	constructor(private createEstablishmentService: CreateEstablishmentService) {}
 
 	handle(request: Request, response: Response) {
-		const { email, name, picture, address } = request.body;
+		const { email, name, picture, address, phone } = request.body;
 
 		try {
 			this.createEstablishmentService.execute({
@@ -13,6 +13,7 @@ class CreateEstablishmentController {
 				name,
 				picture,
 				address,
+				phone,
 			});
 		} catch (error: any) {
 			return response.status(400).json({ error: error.message });

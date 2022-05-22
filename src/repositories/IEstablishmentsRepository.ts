@@ -6,6 +6,7 @@ interface ICreateEstablishmentDTO {
 	name: string;
 	picture: string;
 	address: string;
+	phone: string;
 }
 
 interface IFindMenuByCategory {
@@ -37,10 +38,23 @@ interface IEstablishmentsRepository {
 	findById(id: string): Establishment | undefined;
 	findByName(name: string): Establishment | undefined;
 	findByEmail(email: string): Establishment | undefined;
-	findMenuByCategory({ establishment_id, category }: IFindMenuByCategory): Menu | undefined;
-	addMenuCategory({establishment_id, category}: IAddMenuCategoryDTO): void;
-	addDishToMenu({establishment_id, category, name, price, picture, details}: IAddDishToMenuDTO): void;
-	deleteMenuCategory({ establishment_id, category }: IDeleteMenuCategoryDTO): void;
+	findMenuByCategory({
+		establishment_id,
+		category,
+	}: IFindMenuByCategory): Menu | undefined;
+	addMenuCategory({ establishment_id, category }: IAddMenuCategoryDTO): void;
+	addDishToMenu({
+		establishment_id,
+		category,
+		name,
+		price,
+		picture,
+		details,
+	}: IAddDishToMenuDTO): void;
+	deleteMenuCategory({
+		establishment_id,
+		category,
+	}: IDeleteMenuCategoryDTO): void;
 	list(): Establishment[];
 }
 
@@ -50,5 +64,5 @@ export {
 	IAddMenuCategoryDTO,
 	IAddDishToMenuDTO,
 	IDeleteMenuCategoryDTO,
-	IEstablishmentsRepository
+	IEstablishmentsRepository,
 };

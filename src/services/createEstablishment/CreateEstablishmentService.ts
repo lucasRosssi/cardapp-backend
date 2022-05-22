@@ -5,12 +5,13 @@ interface IRequest {
 	name: string;
 	picture: string;
 	address: string;
+	phone: string;
 }
 
 class CreateEstablishmentService {
 	constructor(private establishmentsRepository: EstablishmentsRepository) {}
 
-	execute({ email, name, picture, address }: IRequest) {
+	execute({ email, name, picture, address, phone }: IRequest) {
 		const emailAlreadyInUse = this.establishmentsRepository.findByEmail(email);
 		if (emailAlreadyInUse) {
 			throw new Error('Email is already in use!');
@@ -22,7 +23,13 @@ class CreateEstablishmentService {
 			throw new Error('Establishment already exists!');
 		}
 
-		this.establishmentsRepository.create({ email, name, picture, address });
+		this.establishmentsRepository.create({
+			email,
+			name,
+			picture,
+			address,
+			phone,
+		});
 	}
 }
 

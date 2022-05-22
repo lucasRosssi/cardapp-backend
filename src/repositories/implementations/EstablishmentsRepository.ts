@@ -18,7 +18,6 @@ class EstablishmentsRepository implements IEstablishmentsRepository {
 	constructor() {
 		this.establishments = [];
 	}
-	
 
 	public static getInstance(): EstablishmentsRepository {
 		if (!EstablishmentsRepository.INSTANCE) {
@@ -28,7 +27,13 @@ class EstablishmentsRepository implements IEstablishmentsRepository {
 		return EstablishmentsRepository.INSTANCE;
 	}
 
-	create({ email, name, picture, address }: ICreateEstablishmentDTO): void {
+	create({
+		email,
+		name,
+		picture,
+		address,
+		phone,
+	}: ICreateEstablishmentDTO): void {
 		const establishment = new Establishment();
 
 		Object.assign(establishment, {
@@ -36,6 +41,7 @@ class EstablishmentsRepository implements IEstablishmentsRepository {
 			name,
 			picture,
 			address,
+			phone,
 		});
 
 		this.establishments.push(establishment);
@@ -65,17 +71,22 @@ class EstablishmentsRepository implements IEstablishmentsRepository {
 		return establishment;
 	}
 
-	findMenuByCategory({ establishment_id, category }: IFindMenuByCategory): Menu | undefined {
+	findMenuByCategory({
+		establishment_id,
+		category,
+	}: IFindMenuByCategory): Menu | undefined {
 		const establishment = this.findById(establishment_id);
 
 		if (establishment) {
-			const menu = establishment.menus.find(menu => menu.category === category);
+			const menu = establishment.menus.find(
+				(menu) => menu.category === category
+			);
 
-			return menu
+			return menu;
 		}
 	}
 
-	addMenuCategory({establishment_id, category}: IAddMenuCategoryDTO): void {
+	addMenuCategory({ establishment_id, category }: IAddMenuCategoryDTO): void {
 		const establishment = this.findById(establishment_id);
 
 		if (establishment) {
@@ -87,8 +98,15 @@ class EstablishmentsRepository implements IEstablishmentsRepository {
 		}
 	}
 
-	addDishToMenu({establishment_id, category, name, price, picture, details}: IAddDishToMenuDTO): void {
-		const menu = this.findMenuByCategory({ establishment_id, category })
+	addDishToMenu({
+		establishment_id,
+		category,
+		name,
+		price,
+		picture,
+		details,
+	}: IAddDishToMenuDTO): void {
+		const menu = this.findMenuByCategory({ establishment_id, category });
 
 		if (menu) {
 			const dish = new Dish();
@@ -102,14 +120,18 @@ class EstablishmentsRepository implements IEstablishmentsRepository {
 
 			menu.dishes.push(dish);
 		}
-		
 	}
 
-	deleteMenuCategory({ establishment_id, category }: IDeleteMenuCategoryDTO): void {
+	deleteMenuCategory({
+		establishment_id,
+		category,
+	}: IDeleteMenuCategoryDTO): void {
 		const establishment = this.findById(establishment_id);
 
 		if (establishment) {
-			const menuIndex = establishment.menus.findIndex(menu => menu.category === category);
+			const menuIndex = establishment.menus.findIndex(
+				(menu) => menu.category === category
+			);
 
 			if (menuIndex !== -1) {
 				establishment.menus.splice(menuIndex, 1);

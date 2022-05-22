@@ -7,6 +7,7 @@ class Establishment {
 	name: string;
 	picture: string;
 	address: string;
+	phone: string;
 	menus: Menu[];
 
 	constructor() {
