@@ -1,4 +1,4 @@
-import { EstablishmentsRepository } from '../../repositories/implementations/EstablishmentsRepository';
+import { EstablishmentsRepository } from '../../../repositories/implementations/EstablishmentsRepository';
 import { CreateEstablishmentController } from './CreateEstablishmentController';
 import { CreateEstablishmentService } from './CreateEstablishmentService';
 

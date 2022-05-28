@@ -1,4 +1,4 @@
-import { EstablishmentsRepository } from '../../repositories/implementations/EstablishmentsRepository';
+import { EstablishmentsRepository } from '../../../repositories/implementations/EstablishmentsRepository';
 
 class ListEstablishmentsService {
 	constructor(private establishmentsRepository: EstablishmentsRepository) {}
